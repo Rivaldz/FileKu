@@ -33,9 +33,8 @@ public class LoginActivity extends AppCompatActivity {
         email = findViewById(R.id.emailLogin);
         pass = findViewById(R.id.passLogin);
         loginBut = findViewById(R.id.buttonLogin);
+        firebaseAuth = FirebaseAuth.getInstance();
 
-        final String emailSt = email.getText().toString();
-        final String passSt = pass.getText().toString();
 
         daftar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +46,9 @@ public class LoginActivity extends AppCompatActivity {
         loginBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               firebaseAuth.signInWithEmailAndPassword(emailSt, passSt).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                 String emailSt = email.getText().toString();
+                 String passSt = pass.getText().toString();
+                firebaseAuth.signInWithEmailAndPassword(emailSt, passSt).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                    @Override
                    public void onComplete(@NonNull Task<AuthResult> task) {
                        if (task.isSuccessful()){

@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     EditText username, password, email;
     FirebaseAuth firebaseAuth;
+    Button regiterBut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,19 +32,37 @@ public class RegisterActivity extends AppCompatActivity {
         username = findViewById(R.id.usernameDaftar);
         password = findViewById(R.id.passDaftar);
         email = findViewById(R.id.emailDaftar);
+        regiterBut = findViewById(R.id.buttonDaftar);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        String emailString = email.getText().toString();
-        String passString = password.getText().toString();
-        if (!isEmpty(emailString) && !isEmpty(passString)){
-            firebaseAuth.createUserWithEmailAndPassword(emailString,passString).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    Toast.makeText(getBaseContext(), "Selamat Registrasi anda berhasil", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+
+        regiterBut.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View v) {
+                final String emailString = email.getText().toString();
+                final String passString = password.getText().toString();
+                if (!isEmpty(emailString) && !isEmpty(passString)){
+                    firebaseAuth.createUserWithEmailAndPassword(emailString,passString).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()){
+                                Toast.makeText(getBaseContext(), "Selamat Registrasi anda berhasil", Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                            }
+                            else {
+
+                                Toast.makeText(getBaseContext(), "Registrasi Anda Gagal Silahkan Isi atau cek kolom yang ada", Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+
+                    });
                 }
-            });
-        }
+
+            }
+        });
 
 
     }
