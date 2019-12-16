@@ -6,8 +6,12 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Switch;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.valdo.fileku.Fragments.HomeFragment;
+import com.valdo.fileku.Fragments.ProfileFragment;
+import com.valdo.fileku.Fragments.UploadFragment;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener
 {
@@ -33,8 +37,24 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        return false;
+        Fragment fragment = null;
+        switch (menuItem.getItemId()){
+            case R.id.action_home:
+                fragment = new HomeFragment();
+                break;
+
+            case R.id.action_profil:
+                fragment = new ProfileFragment();
+                break;
+
+            case R.id.action_upload:
+                fragment = new UploadFragment();
+                break;
+        }
+
+        return loadFragment(fragment);
     }
+
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
