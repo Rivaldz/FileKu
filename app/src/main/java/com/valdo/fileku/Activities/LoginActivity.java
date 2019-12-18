@@ -46,22 +46,26 @@ public class LoginActivity extends AppCompatActivity {
         loginBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 String emailSt = email.getText().toString();
-                 String passSt = pass.getText().toString();
-                firebaseAuth.signInWithEmailAndPassword(emailSt, passSt).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                   @Override
-                   public void onComplete(@NonNull Task<AuthResult> task) {
-                       if (task.isSuccessful()){
-                           startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                           Toast.makeText(LoginActivity.this, "Selamat Login Berhasil", Toast.LENGTH_LONG).show();
-                       }
-                       else {
+                loginFirebase();
+            }
+        });
+    }
 
-                           Toast.makeText(LoginActivity.this, "Gagal Login Cek Username dan Password", Toast.LENGTH_LONG).show();
-                       }
+    private void loginFirebase(){
+        String emailSt = email.getText().toString();
+        String passSt = pass.getText().toString();
+        firebaseAuth.signInWithEmailAndPassword(emailSt, passSt).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()){
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    Toast.makeText(LoginActivity.this, "Selamat Login Berhasil", Toast.LENGTH_LONG).show();
+                }
+                else {
 
-                   }
-               });
+                    Toast.makeText(LoginActivity.this, "Gagal Login Cek Username dan Password", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
     }

@@ -15,14 +15,21 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.valdo.fileku.R;
+import com.valdo.fileku.models.RegisterModel;
 
 import static android.text.TextUtils.isEmpty;
 
 public class RegisterActivity extends AppCompatActivity {
 
     EditText username, password, email;
+
     FirebaseAuth firebaseAuth;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+
     Button regiterBut;
 
     @Override
@@ -34,6 +41,9 @@ public class RegisterActivity extends AppCompatActivity {
         email = findViewById(R.id.emailDaftar);
         regiterBut = findViewById(R.id.buttonDaftar);
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users");
+
 
 
         regiterBut.setOnClickListener(new View.OnClickListener() {
@@ -44,25 +54,38 @@ public class RegisterActivity extends AppCompatActivity {
                 final String emailString = email.getText().toString();
                 final String passString = password.getText().toString();
                 if (!isEmpty(emailString) && !isEmpty(passString)){
-                    firebaseAuth.createUserWithEmailAndPassword(emailString,passString).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()){
-                                Toast.makeText(getBaseContext(), "Selamat Registrasi anda berhasil", Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                            }
-                            else {
+                    regiterMethod();
 
-                                Toast.makeText(getBaseContext(), "Registrasi Anda Gagal Silahkan Isi atau cek kolom yang ada", Toast.LENGTH_LONG).show();
-                            }
-
-                        }
-
-                    });
                 }
 
             }
         });
+
+
+    }
+    private void regiterMethod(){
+        final String emailString = email.getText().toString();
+        final String passString = password.getText().toString();
+        final String usernameString = username.getText().toString();
+        firebaseAuth.createUserWithEmailAndPassword(emailString,passString).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(getBaseContext(), "Selamat Registrasi anda berhasil", Toast.LENGTH_LONG).show();
+                    RegisterModel registerModel = new RegisterModel(usernameString, emailString,passString);
+                    databaseReference.child(usernameString).setValue(registerModel);
+                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                }
+                else {
+
+                    Toast.makeText(getBaseContext(), "Registrasi Anda Gagal Silahkan Isi atau cek kolom yang ada", Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+        });
+
+
 
 
     }
