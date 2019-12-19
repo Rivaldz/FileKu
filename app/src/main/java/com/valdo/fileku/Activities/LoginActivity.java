@@ -16,14 +16,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.valdo.fileku.Fragments.UploadFragment;
 import com.valdo.fileku.MainActivity;
 import com.valdo.fileku.R;
+import com.valdo.fileku.models.UploadModel;
 
 public class LoginActivity extends AppCompatActivity {
     private TextView daftar;
     private EditText email, pass;
     private Button loginBut;
     private FirebaseAuth firebaseAuth;
+
+    public String emailUsername = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,8 @@ public class LoginActivity extends AppCompatActivity {
         loginBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity mainActivity = new MainActivity();
+                mainActivity.usernameUpload = email.getText().toString();
                 loginFirebase();
             }
         });

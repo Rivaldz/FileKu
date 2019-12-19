@@ -16,6 +16,8 @@ import com.valdo.fileku.Fragments.UploadFragment;
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener
 {
 
+    public static String usernameUpload = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
